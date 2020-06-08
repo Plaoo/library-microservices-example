@@ -1,0 +1,38 @@
+version: '3.7'
+
+services:
+  book_service:
+    build: ./book-service
+    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+    volumes:
+      - ./book-service/:/app/
+    ports:
+      - 8001:8000
+    environment:
+      - DATABASE_URI=postgresql://book_db_username:book_db_password@book_db/book_db_dev
+        #      - AUTHOR_SERVICE_HOST_URL=http://author_service:8000/api/v1/author/
+    depends_on:
+      - book_db
+
+  book_db:
+    image: postgres:12.1-alpine
+    volumes:
+      - postgres_data_book:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=book_db_username
+      - POSTGRES_PASSWORD=book_db_password
+      - POSTGRES_DB=book_db_dev
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./nginx_config.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      #- cast_service
+      - book_service
+
+volumes:
+  postgres_data_book:
+

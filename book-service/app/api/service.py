@@ -1,9 +1,10 @@
 import os
 import httpx
 
-BOOK_SERVICE_HOST_URL = 'http://localhost:8002/api/v1/books'
+AUTHOR_SERVICE_HOST_URL = "http://localhost:8002/api/v1/authors"
 
-def is_book_present(book_id:int):
-    url = os.environ.get('BOOK_SERVICE_HOST_URL') or BOOK_SERVICE_HOST_URL
-    r = httpx.get(f'{url}{book_id}')
+
+def is_author_present(book_id: int):
+    url = os.environ.get("AUTHOR_SERVICE_HOST_URL") or AUTHOR_SERVICE_HOST_URL
+    r = httpx.get(f"{url}{author_id}")
     return True if r.statuscode == 200 else False
