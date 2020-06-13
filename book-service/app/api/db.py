@@ -3,6 +3,7 @@ from sqlalchemy import Column, Integer, MetaData, String, Table, create_engine, 
 from databases import Database
 import logging
 log = logging.getLogger(__name__)
+
 DATABASE_URI = os.getenv("DATABASE_URI")
 
 engine = create_engine(DATABASE_URI)
