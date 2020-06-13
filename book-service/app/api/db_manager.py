@@ -1,12 +1,8 @@
 from app.api.models import BookIn, BookOut, BookUpdate
 from app.api.db import books, database
-import logging
-
-log = logging.getLogger(__name__)
-
 
 async def add_book(payload: BookIn):
-    query = books.insert().values(**payload.dict)
+    query = books.insert().values(**payload.dict())
     return await database.execute(query=query)
 
 
@@ -16,15 +12,15 @@ async def get_all_books():
 
 
 async def get_book(id):
-    query = books.select(book.c.id == id)
+    query = books.select(books.c.id == id)
     return await database.fetch_one(query=query)
 
 
 async def delete_book(id: int):
-    query = books.delete().where(book.c.id == id)
+    query = books.delete().where(books.c.id == id)
     return await database.execute(query=query)
 
 
 async def update_book(id: int, payload: BookIn):
-    query = books.update().where(book.c.id == id).values(**payload.dict())
+    query = books.update().where(books.c.id == id).values(**payload.dict())
     return await database.execute(query=query)

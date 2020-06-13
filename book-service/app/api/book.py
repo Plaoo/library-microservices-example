@@ -4,7 +4,9 @@ from app.api.models import BookOut, BookIn, BookUpdate
 from app.api import db_manager
 from app.api.service import is_author_present
 
+
 books = APIRouter()
+
 
 @books.get("/", response_model=List[BookOut])
 async def get_books():
@@ -13,14 +15,14 @@ async def get_books():
 
 @books.post("/", response_model=BookOut, status_code=201)
 async def create_book(payload: BookIn):
-    for book_id in payload.book_id:
-        if not is_author_present(book_id):
-            raise HTTPException(
-                status_code=404, detail=f"Book with id: {book_id} not found"
-            )
-        book_id = await db_manager.add_book(payload)
-        response = {"id": book_id, **payload.dict()}
-        return response
+    #    for author_id in payload.authors_id:
+    #        if not is_author_present(author_id):
+    #            raise HTTPException(
+    #                status_code=404, detail=f"Book with id: {book_id} not found"
+    #            )
+    book_id = await db_manager.add_book(payload)
+    response = {"id": book_id, **payload.dict()}
+    return response
 
 
 @books.get("/{id}", response_model=BookOut)
