@@ -23,19 +23,20 @@ async def get_author(id:int):
     return author
 
 @authors.put('/{id}', response_model=AuthorOut)
-async def update_author(id:int):
-    author = db_manager.get_book(id)
+async def update_author(id:int, payload: AuthorUpdate):
+    author = await db_manager.get_author(id)
     if not author:
         raise HTTPException(status_code=404, detail='Author not Found')
     update_data = payload.dict(exclude_unset = True)
     author_id_db = AuthorIn(**author)
 
     update_author= author_id_db.copy(update=update_data)
-    return await db_manager.update_author(id, update_author)
+    update = await db_manager.update_author(id, update_author)
+    return await get_author(id)
 
 @authors.delete("/{id}", response_model=None)
-async def delete_book(id: int):
-    author= await db_manager.get_book(id)
+async def delete_author(id: int):
+    author= await db_manager.get_author(id)
     if not author:
         raise HTTPException(status_code=404, detail="Author not found")
     return await db_manager.delete_author(id)

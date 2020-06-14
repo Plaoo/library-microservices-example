@@ -5,7 +5,7 @@ class BookIn(BaseModel):
     title: str
     year: int
     genres: List[str]
-    authors_id: List[str]
+    authors_id: Optional[List[str]] = None
 
 class BookOut(BookIn):
     id: int
