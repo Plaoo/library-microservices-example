@@ -17,7 +17,7 @@ async def create_author(payload: AuthorIn):
 
 @authors.get('/{id}', response_model=AuthorOut)
 async def get_author(id:int):
-    author = db_manager.get_book(id)
+    author = await db_manager.get_author(id)
     if not author:
         raise HTTPException(status_code=404, detail='Author not Found')
     return author
@@ -33,7 +33,7 @@ async def update_author(id:int):
     update_author= author_id_db.copy(update=update_data)
     return await db_manager.update_author(id, update_author)
 
-@authors.delete("/{id}/", response_model=None)
+@authors.delete("/{id}", response_model=None)
 async def delete_book(id: int):
     author= await db_manager.get_book(id)
     if not author:
