@@ -15,11 +15,11 @@ async def get_books():
 
 @books.post("/", response_model=BookOut, status_code=201)
 async def create_book(payload: BookIn):
-    #    for author_id in payload.authors_id:
-    #        if not is_author_present(author_id):
-    #            raise HTTPException(
-    #                status_code=404, detail=f"Book with id: {book_id} not found"
-    #            )
+    for author_id in payload.authors_id:
+        if not is_author_present(author_id):
+            raise HTTPException(
+                status_code=404, detail=f"Book with id: {author_id} not found"
+            )
     book_id = await db_manager.add_book(payload)
     response = {"id": book_id, **payload.dict()}
     return response

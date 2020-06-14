@@ -17,6 +17,6 @@ async def delete_author(id: int):
     query = authors.delete().where(authors.c.id == id)
     return await database.execute(query=query)
 
-async def update_book(id: int, payload: AuthorIn):
+async def update_author(id: int, payload: AuthorIn):
     query = authors.update().where(authors.c.id == id).values(**payload.dict())
     return await database.execute(query=query)
