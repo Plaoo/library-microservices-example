@@ -10,7 +10,7 @@ services:
       - 8001:8000
     environment:
       - DATABASE_URI=postgresql://book_db_username:book_db_password@book_db/book_db_dev
-      - AUTHOR_SERVICE_HOST_URL=http://author_service:8000/api/v1/author/
+      - AUTHOR_SERVICE_HOST_URL=http://author_service:8000/api/v1/authors/
     depends_on:
       - book_db
 

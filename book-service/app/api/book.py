@@ -18,7 +18,7 @@ async def create_book(payload: BookIn):
     for author_id in payload.authors_id:
         if not is_author_present(author_id):
             raise HTTPException(
-                status_code=404, detail=f"Book with id: {author_id} not found"
+                status_code=404, detail=f"Author with id: {author_id} not found"
             )
     book_id = await db_manager.add_book(payload)
     response = {"id": book_id, **payload.dict()}
@@ -33,14 +33,14 @@ async def get_book(id: int):
     return book
 
 
-@books.put("/{id}/", response_model=BookOut)
+@books.put("/{id}", response_model=BookOut)
 async def update_book(id: int, payload: BookUpdate):
     book = await db_manager.get_book(id)
     if not book:
         raise HTTPException(status_code=404, detail="Book not found")
     update_data = payload.dict(exclude_unset=True)
 
-    if "authors_id" in update_data:
+    if authors_id in update_data:
         for author_id in payload.authors_id:
             if not is_author_present(author_id):
                 raise HTTPException(status_code=404, detail=f"Author ID not found")
@@ -50,7 +50,7 @@ async def update_book(id: int, payload: BookUpdate):
     return await db_manager.update_book(id, update_book)
 
 
-@books.delete("/{id}/", response_model=None)
+@books.delete("/{id}", response_model=None)
 async def delete_book(id: int):
     book = await db_manager.get_book(id)
     if not book:
