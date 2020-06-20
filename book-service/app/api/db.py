@@ -1,8 +1,6 @@
 import os
 from sqlalchemy import Column, Integer, MetaData, String, Table, create_engine, ARRAY
 from databases import Database
-import logging
-log = logging.getLogger(__name__)
 
 DATABASE_URI = os.getenv("DATABASE_URI")
 
@@ -16,7 +14,7 @@ books = Table(
     Column("id", Integer, primary_key=True),
     Column("title", String(50)),
     Column("year", Integer),
-    Column("genres", ARRAY("String")),
+    Column("genres", ARRAY(String)),
     Column("authors_id", ARRAY(Integer)),
 )
 

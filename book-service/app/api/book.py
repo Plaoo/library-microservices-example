@@ -3,7 +3,9 @@ from fastapi import APIRouter, HTTPException
 from app.api.models import BookOut, BookIn, BookUpdate
 from app.api import db_manager
 from app.api.service import is_author_present
+import logging
 
+log=logging.getLogger(__name__)
 
 books = APIRouter()
 
@@ -39,8 +41,7 @@ async def update_book(id: int, payload: BookUpdate):
     if not book:
         raise HTTPException(status_code=404, detail="Book not found")
     update_data = payload.dict(exclude_unset=True)
-
-    if authors_id in update_data:
+    if update_data.get('authors_id', False):
         for author_id in payload.authors_id:
             if not is_author_present(author_id):
                 raise HTTPException(status_code=404, detail=f"Author ID not found")
