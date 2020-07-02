@@ -4,6 +4,7 @@ from databases import Database
 
 DATABASE_URI = os.getenv("DATABASE_URI")
 
+
 engine = create_engine(DATABASE_URI)
 metadata = MetaData()
 

@@ -3,17 +3,11 @@ from fastapi import APIRouter, HTTPException
 from app.api.models import BookOut, BookIn, BookUpdate
 from app.api import db_manager
 from app.api.service import is_author_present
-import logging
-
-log=logging.getLogger(__name__)
-
 books = APIRouter()
-
 
 @books.get("/", response_model=List[BookOut])
 async def get_books():
     return await db_manager.get_all_books()
-
 
 @books.post("/", response_model=BookOut, status_code=201)
 async def create_book(payload: BookIn):
