@@ -54,7 +54,27 @@ services:
       - author_service
       - book_service
 
+  redis:
+    image: redis:3.2-alpine
+    volumes:
+      #      - redis_data:/data
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - 6379:6379
+
+    networks:
+      node_net:
+        ipv4_address: 172.28.1.4
+
+networks:
+  node_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
+
 volumes:
   postgres_data_book:
   postgres_data_author:
-
+  redis_data:
